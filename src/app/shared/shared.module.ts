@@ -13,6 +13,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
@@ -38,6 +39,7 @@ import { NavigationComponent } from './components/navigation/navigation.componen
     MatStepperModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatSnackBarModule,
   ],
   exports: [
     LoginComponent,
@@ -59,6 +61,7 @@ import { NavigationComponent } from './components/navigation/navigation.componen
     MatStepperModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatSnackBarModule,
   ],
   // no providers here
 })
