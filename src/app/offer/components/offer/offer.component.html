@@ -1,0 +1,320 @@
+<div>
+  <mat-stepper orientation="vertical" [linear]="isLinear" #stepper>
+    <mat-step [stepControl]="headerForm" class="d-flex w-100">
+      <form [formGroup]="headerForm">
+        <ng-template matStepLabel>
+          <span> Add Quote</span>
+          <span *ngIf="headerForm.dirty && headerForm.status == 'INVALID'"
+            ><mat-icon color="warn">error</mat-icon></span
+          >
+        </ng-template>
+        <div class="row">
+          <div class="col-lg-3 col-md-6 col-sm-12">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Quote Number</mat-label>
+              <input
+                type="number"
+                matInput
+                placeholder="(required | number)"
+                formControlName="quoteNumber"
+                required
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-12">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Contact Person</mat-label>
+              <input
+                type="text"
+                matInput
+                placeholder="(readonly | text)"
+                formControlName="contactPerson"
+                readonly="true"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-12">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Contact Phone</mat-label>
+              <input
+                type="tel"
+                matInput
+                placeholder="(readonly | text)"
+                formControlName="contactPhone"
+                readonly="true"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-12">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Contact Email</mat-label>
+              <input
+                type="email"
+                matInput
+                placeholder="(readonly | text)"
+                formControlName="contactEmail"
+                readonly="true"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-12">
+            <mat-form-field color="primary" appearance="fill" class="w-100">
+              <mat-label>Valid till Date</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker1"
+                formControlName="validity"
+              />
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker1"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+        <mat-divider class="mb-2 mt-2"></mat-divider>
+        <div>
+          <button mat-button matStepperNext color="primary">Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="customerForm">
+      <form [formGroup]="customerForm">
+        <ng-template matStepLabel>
+          <span> Add Customer</span>
+          <span *ngIf="customerForm.dirty && customerForm.status == 'INVALID'"
+            ><mat-icon color="warn">error</mat-icon></span
+          ></ng-template
+        >
+        <div class="row">
+          <div class="col-lg-3 col-md-6 col-sm-12">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Name</mat-label>
+              <input
+                matInput
+                placeholder="(required | text)"
+                formControlName="name"
+                required
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-12">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Email</mat-label>
+              <input
+                matInput
+                formControlName="email"
+                placeholder="(required | email)"
+                requireds
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-12">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Organization</mat-label>
+              <input
+                matInput
+                formControlName="orgName"
+                placeholder="(required | text)"
+                required
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-12">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Address 1</mat-label>
+              <input
+                matInput
+                formControlName="add1"
+                placeholder="(required | upto 100 chars)"
+                required
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-12">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Address 2</mat-label>
+              <input
+                matInput
+                formControlName="add2"
+                placeholder="(upto 100 chars)"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-12">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>City</mat-label>
+              <input
+                matInput
+                formControlName="city"
+                placeholder="(required | text)"
+                required
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-12">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>State</mat-label>
+              <input
+                matInput
+                formControlName="state"
+                placeholder="(required | text)"
+                required
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-12">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Pin Code</mat-label>
+              <input
+                type="number"
+                step="1"
+                matInput
+                formControlName="pinCode"
+                placeholder="(required | text)"
+                required
+              />
+            </mat-form-field>
+          </div>
+        </div>
+        <mat-divider class="mb-2 mt-2"></mat-divider>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="productForm" class="d-flex w-100">
+      <form [formGroup]="productForm">
+        <ng-template matStepLabel>
+          <span> Add Products</span>
+          <span *ngIf="productForm.dirty && productForm.status == 'INVALID'"
+            ><mat-icon color="warn">error</mat-icon></span
+          >
+        </ng-template>
+        <ng-container
+          formArrayName="products"
+          *ngFor="let product of products.controls; let i = index"
+        >
+          <div [formGroupName]="i">
+            <h3>({{ i + 1 }})</h3>
+            <div class="row">
+              <div class="col-lg-3 col-md-6 col-sm-12">
+                <mat-form-field appearance="fill" class="w-100">
+                  <mat-label>Name</mat-label>
+                  <input
+                    type="text"
+                    matInput
+                    placeholder="(required | text)"
+                    formControlName="name"
+                    required
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-lg-3 col-md-6 col-sm-12">
+                <mat-form-field appearance="fill" class="w-100">
+                  <mat-label>Description</mat-label>
+                  <input
+                    type="text"
+                    matInput
+                    placeholder="(required | text)"
+                    formControlName="description"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-lg-3 col-md-6 col-sm-12">
+                <mat-form-field appearance="fill" class="w-100">
+                  <mat-label>Make</mat-label>
+                  <input
+                    type="tel"
+                    matInput
+                    placeholder="(required | text)"
+                    formControlName="make"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-lg-3 col-md-6 col-sm-12">
+                <mat-form-field appearance="fill" class="w-100">
+                  <mat-label>Quantity</mat-label>
+                  <input
+                    type="number"
+                    matInput
+                    placeholder="(required | number)"
+                    formControlName="quantity"
+                    step="1"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-lg-3 col-md-6 col-sm-12">
+                <mat-form-field appearance="fill" class="w-100">
+                  <mat-label>Price</mat-label>
+                  <input
+                    type="number"
+                    matInput
+                    placeholder="Price"
+                    formControlName="price"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="w-100 mat-form-field-flex">
+                  <button
+                    mat-mini-fab
+                    color="warn"
+                    (click)="removeProduct(i)"
+                    title="Remove Product"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <mat-divider class="mb-2 mt-2"></mat-divider>
+          </div>
+        </ng-container>
+        <div>
+          <button
+            mat-mini-fab
+            color="primary"
+            (click)="addProduct()"
+            title="Add Product"
+          >
+            <mat-icon>add_circle</mat-icon>
+          </button>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext color="primary">Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel
+        >Generate Offer {{ headerForm.status == "INVALID" }} |
+        {{ customerForm.status == "INVALID" }} |
+        {{ products.status == "INVALID" }}</ng-template
+      >
+
+      <div>
+        <div class="text-center">
+          <button
+            mat-mini-fab
+            color="primary"
+            (click)="downloadOffer()"
+            title="Check console for form details"
+            [disabled]="
+              headerForm.status == 'INVALID' &&
+              customerForm.status == 'INVALID' &&
+              products.status == 'INVALID'
+            "
+          >
+            <mat-icon>cloud_download</mat-icon>
+          </button>
+        </div>
+        <mat-divider class="mb-2 mt-2"></mat-divider>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button (click)="stepper.reset()">Reset</button>
+      </div>
+    </mat-step>
+  </mat-stepper>
+</div>
