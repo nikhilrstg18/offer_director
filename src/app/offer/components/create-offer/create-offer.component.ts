@@ -11,9 +11,12 @@ const htmlToPdfmake = require('html-to-pdfmake');
 
 export class Product {
   constructor(
+    public code: string = '',
     public name: string = '',
+    public description: string = '',
+    public make: string = '',
     public price: number = 0,
-    public qty: number = 0
+    public quantity: number = 0
   ) {}
 }
 export class Invoice {
@@ -174,33 +177,85 @@ export class CreateOfferComponent implements OnInit {
       pageOrientation: 'portrait',
 
       // [left, top, right, bottom] or [horizontal, vertical] or just a number for equal margins
-      pageMargins: [60, 100, 60, 60],
-      // header: {
-      //   color: '#555555',
-      //   columns: [
-      //     {
-      //       image: 'logo',
-      //       width: 180,
-      //       height: 60,
-      //       //margin: [0, 20, 0, 20],
-      //     },
-      //     'test header',
-      //     {
-      //       image: 'quality',
-      //       width: 60,
-      //       height: 80,
-      //       alignment: 'right',
-      //       //margin: [0, 0, 0, 20],
-      //     },
-      //   ],
-      // },
+      pageMargins: [60, 100, 60, 100],
+      footer: {
+        margin: [15, 0, 15, -20],
+        columns: [
+          {
+            alignment: 'left',
+            layout: 'headerLineOnly', // optional
+            table: {
+              // headers are automatically repeated if the table spans over multiple pages
+              // you can declare how many rows should be treated as headers
+              headerRows: 1,
+              widths: [140, 'auto', 100, '*'],
+
+              body: [
+                [{ text: 'Registerd Office:', bold: true }],
+                ['B-522, Brij Vihar,'],
+                ['Sahibabad, Ghaziabad 20101,'],
+                ['(UP) INDIA)'],
+              ],
+            },
+          },
+          {
+            alignment: 'left',
+            layout: 'headerLineOnly', // optional
+            table: {
+              // headers are automatically repeated if the table spans over multiple pages
+              // you can declare how many rows should be treated as headers
+              headerRows: 1,
+              widths: [140, 'auto', 100, '*'],
+
+              body: [
+                [{ text: 'Corporate Office:', bold: true }],
+                ['Office No. 412, 4th floor,'],
+                ['Devika Tower, Chander Nagar,'],
+                ['Ghaziabad 20101, (UP) INDIA)'],
+              ],
+            },
+          },
+          {
+            alignment: 'left',
+            layout: 'headerLineOnly', // optional
+            table: {
+              // headers are automatically repeated if the table spans over multiple pages
+              // you can declare how many rows should be treated as headers
+              headerRows: 1,
+              widths: [160, 'auto', 100, '*'],
+
+              body: [
+                [{ text: 'Contact:', bold: true }],
+                ['+91 120 4223815, 9818995569, 9911421085'],
+                [
+                  {
+                    text: [
+                      { text: 'Web: ', bold: true },
+                      'www.atsfoodequipment.com',
+                    ],
+                  },
+                ],
+                [
+                  {
+                    text: [
+                      { text: 'Email: ', bold: true },
+                      'info@atsfoodequipment.com',
+                    ],
+                  },
+                ],
+              ],
+            },
+          },
+        ],
+        style: 'font20',
+      },
       header: {
         margin: [15, 0, 15, -20],
         columns: [
           {
             image: 'logo',
-            width: 180,
-            height: 80,
+            width: 150,
+            height: 70,
             margin: [0, 20, 0, 0],
           },
           {
@@ -210,8 +265,8 @@ export class CreateOfferComponent implements OnInit {
           },
           {
             image: 'quality',
-            width: 80,
-            height: 100,
+            width: 70,
+            height: 90,
             alignment: 'right',
             margin: [0],
           },
@@ -234,7 +289,11 @@ export class CreateOfferComponent implements OnInit {
         quality:
           'https://nikhilrstg18.github.io/offer_director/assets/quality.png',
       },
+      defaultStyle: {},
       styles: {
+        font20: {
+          fontSize: 9,
+        },
         sectionHeader: {
           bold: true,
           decoration: 'underline',
@@ -243,6 +302,6 @@ export class CreateOfferComponent implements OnInit {
         },
       },
     };
-    pdfMake.createPdf(dd as any).download();
+    pdfMake.createPdf(dd as any).open();
   }
 }
