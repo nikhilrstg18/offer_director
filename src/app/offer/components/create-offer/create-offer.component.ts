@@ -1,9 +1,34 @@
-import { OfferComponent } from './../offer/offer.component';
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
-import { combineLatest } from 'rxjs';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { combineLatest } from 'rxjs';
+declare var require: any;
 
+import * as pdfMake from 'pdfmake/build/pdfmake';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+const htmlToPdfmake = require('html-to-pdfmake');
+(pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
+
+export class Product {
+  constructor(
+    public name: string = '',
+    public price: number = 0,
+    public qty: number = 0
+  ) {}
+}
+export class Invoice {
+  constructor(
+    public customerName: string = '',
+    public address: string = '',
+    public contactNo: number = 0,
+    public email: string = '',
+    public products: Product[] = [],
+    public additionalDetails: string = ''
+  ) {
+    // Initially one empty product row we will show
+    this.products.push(new Product());
+  }
+}
 @Component({
   selector: 'od-create-offer',
   templateUrl: './create-offer.component.html',
@@ -18,6 +43,10 @@ export class CreateOfferComponent implements OnInit {
   form!: FormGroup;
   isDisabled: boolean = true;
   durationInSeconds: number = 5;
+  invoice: Invoice = new Invoice('test');
+
+  @ViewChild('pdfTable')
+  pdfTable!: ElementRef;
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -128,5 +157,92 @@ export class CreateOfferComponent implements OnInit {
         duration: this.durationInSeconds * 1000,
       });
     }
+  }
+  public downloadAsPDF() {
+    debugger;
+    // const pdfTable = this.pdfTable.nativeElement;
+    // var ret = htmlToPdfmake(pdfTable.innerHTML, {
+    //   imagesByReference: true,
+    // });
+    // let dd = { ...ret };
+
+    let dd = {
+      // a string or { width: number, height: number }
+      pageSize: 'A4',
+
+      // by default we use portrait, you can change it to landscape if you wish
+      pageOrientation: 'portrait',
+
+      // [left, top, right, bottom] or [horizontal, vertical] or just a number for equal margins
+      pageMargins: [60, 100, 60, 60],
+      // header: {
+      //   color: '#555555',
+      //   columns: [
+      //     {
+      //       image: 'logo',
+      //       width: 180,
+      //       height: 60,
+      //       //margin: [0, 20, 0, 20],
+      //     },
+      //     'test header',
+      //     {
+      //       image: 'quality',
+      //       width: 60,
+      //       height: 80,
+      //       alignment: 'right',
+      //       //margin: [0, 0, 0, 20],
+      //     },
+      //   ],
+      // },
+      header: {
+        margin: [15, 0, 15, -20],
+        columns: [
+          {
+            image: 'logo',
+            width: 180,
+            height: 80,
+            margin: [0, 20, 0, 0],
+          },
+          {
+            text: '',
+            margin: [20, 30],
+            alignment: 'center',
+          },
+          {
+            image: 'quality',
+            width: 80,
+            height: 100,
+            alignment: 'right',
+            margin: [0],
+          },
+        ],
+      },
+      content: [
+        {
+          columns: [
+            [
+              {
+                text: 'this is a test',
+                style: 'sectionHeader',
+              },
+            ],
+          ],
+        },
+      ],
+      images: {
+        logo: 'https://nikhilrstg18.github.io/offer_director/assets/logo.png',
+        quality:
+          'https://nikhilrstg18.github.io/offer_director/assets/quality.png',
+      },
+      styles: {
+        sectionHeader: {
+          bold: true,
+          decoration: 'underline',
+          fontSize: 14,
+          margin: [0, 15, 0, 15],
+        },
+      },
+    };
+    pdfMake.createPdf(dd as any).download();
   }
 }

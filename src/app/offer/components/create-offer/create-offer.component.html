@@ -320,3 +320,25 @@
     </mat-step>
   </mat-stepper>
 </div>
+<div class="container">
+  <div id="pdfTable" #pdfTable>
+    <div style="padding: 2 0">
+      <div style="display: flex; width: 100%">
+        <img
+          src="https://nikhilrstg18.github.io/offer_director/assets/logo.png"
+          alt="ATS"
+          width="136"
+        />
+        <span style="flex: 1 1 auto"></span>
+        <img
+          src="https://nikhilrstg18.github.io/offer_director/assets/quality.png"
+          alt="ATS"
+          width="40"
+        />
+      </div>
+    </div>
+  </div>
+  <button class="btn btn-primary" (click)="downloadAsPDF()">
+    Export To PDF
+  </button>
+</div>
