@@ -1,11 +1,10 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { combineLatest } from 'rxjs';
-declare var require: any;
-
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+declare var require: any;
+
 const htmlToPdfmake = require('html-to-pdfmake');
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
@@ -19,14 +18,35 @@ export class Product {
     public quantity: number = 0
   ) {}
 }
-export class Invoice {
+export class Customer {
   constructor(
-    public customerName: string = '',
-    public address: string = '',
-    public contactNo: number = 0,
+    public name: string = '',
+    public orgName: string = '',
     public email: string = '',
+    public add1: string = '',
+    public add2: string = '',
+    public city: string = '',
+    public state: string = '',
+    public pinCode: number = 0,
+    public phone: number = 0
+  ) {}
+}
+export class QuoteHeader {
+  constructor(
+    public contactPerson: string = 'Tanu Rustagi',
+    public contactEmail: string = 'tanu@atsfoodequipment.com',
+    public contactPhone: string = '9818995569',
+    public quoteNumber: number = 0,
+    public quoteDescription = '',
+    public brandName: string = 'ATS Food Equipment (India) Pvt Ltd',
+    public validity: Date = new Date()
+  ) {}
+}
+export class Offer {
+  constructor(
+    public customer: Customer = new Customer(),
     public products: Product[] = [],
-    public additionalDetails: string = ''
+    public quoteHeader: QuoteHeader = new QuoteHeader()
   ) {
     // Initially one empty product row we will show
     this.products.push(new Product());
@@ -46,7 +66,7 @@ export class CreateOfferComponent implements OnInit {
   form!: FormGroup;
   isDisabled: boolean = true;
   durationInSeconds: number = 5;
-  invoice: Invoice = new Invoice('test');
+  invoice: Offer = new Offer();
 
   @ViewChild('pdfTable')
   pdfTable!: ElementRef;
@@ -57,17 +77,20 @@ export class CreateOfferComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    let offer = new Offer();
     this.defaultValidity.setDate(this.defaultValidity.getDate() + 15);
     this.headerForm = this._formBuilder.group({
       quoteNumber: ['', Validators.required],
-      contactPerson: ['Ms. Tanu Rustagi'],
-      contactPhone: ['+91 9818995569'],
-      contactEmail: ['tanu@atsfoodequipment.com'],
+      quoteDescription: ['', Validators.required],
+      contactPerson: [offer.quoteHeader.contactPerson],
+      contactPhone: [offer.quoteHeader.contactPhone],
+      contactEmail: [offer.quoteHeader.contactEmail],
       validity: [this.defaultValidity, Validators.required],
     });
     this.customerForm = this._formBuilder.group({
       name: ['', Validators.required],
       orgName: ['', Validators.required],
+      phone: ['', Validators.required],
       email: ['', Validators.compose([Validators.required, Validators.email])],
       add1: [
         '',
@@ -85,21 +108,6 @@ export class CreateOfferComponent implements OnInit {
       headers: this.headerForm,
       customer: this.customerForm,
       products: this.products,
-    });
-    combineLatest([
-      this.headerForm.valueChanges,
-      this.customerForm.valueChanges,
-      this.productForm.valueChanges,
-    ]).subscribe((_) => {
-      switch (false) {
-        case this.headerForm.valid:
-        case this.customerForm.valid:
-        case this.productForm.valid:
-          this.isDisabled = true;
-          break;
-        default:
-          this.isDisabled = false;
-      }
     });
   }
 
@@ -123,77 +131,61 @@ export class CreateOfferComponent implements OnInit {
   removeProduct(index: number) {
     this.products.removeAt(index);
   }
-  downloadOffer() {
+  downloadOffer(action: string) {
     if (
       this.headerForm.valid &&
       this.customerForm.valid &&
       this.products.valid
     ) {
-      const form = {
-        quoteHeader: {},
-        customer: {},
-        products: [{}],
-      };
+      let offer: Offer = new Offer();
       for (let prop of Object.keys(this.headerForm.controls)) {
-        form.quoteHeader = {
-          ...form.quoteHeader,
+        offer.quoteHeader = {
+          ...offer.quoteHeader,
           ...{ [prop]: this.headerForm.controls[prop].value },
         };
       }
       for (let prop of Object.keys(this.customerForm.controls)) {
-        form.customer = {
-          ...form.customer,
+        offer.customer = {
+          ...offer.customer,
           ...{ [prop]: this.customerForm.controls[prop].value },
         };
       }
       for (let product of this.products.value) {
-        form.products.push({ ...product });
+        offer.products.push({ ...product });
       }
-      form.products = form.products.splice(1, form.products.length - 1);
+      offer.products = offer.products.splice(1, offer.products.length - 1);
 
       this._snackBar.open('Form Generated', 'Console', {
         duration: this.durationInSeconds * 1000,
       });
-      console.log(form);
+      this.downloadAsPDF(action, offer);
     } else {
       this._snackBar.open('Please fix validations', 'Invalid', {
         duration: this.durationInSeconds * 1000,
       });
     }
   }
-  public downloadAsPDF() {
-    debugger;
-    // const pdfTable = this.pdfTable.nativeElement;
-    // var ret = htmlToPdfmake(pdfTable.innerHTML, {
-    //   imagesByReference: true,
-    // });
-    // let dd = { ...ret };
+  public downloadAsPDF(action: string, offer: Offer) {
+    let today = new Date();
 
     let dd = {
-      // a string or { width: number, height: number }
       pageSize: 'A4',
-
-      // by default we use portrait, you can change it to landscape if you wish
       pageOrientation: 'portrait',
-
-      // [left, top, right, bottom] or [horizontal, vertical] or just a number for equal margins
       pageMargins: [60, 100, 60, 100],
       footer: {
         margin: [15, 0],
         columns: [
           {
             alignment: 'left',
-            layout: 'headerLineOnly', // optional
+            layout: 'headerLineOnly',
             table: {
-              // headers are automatically repeated if the table spans over multiple pages
-              // you can declare how many rows should be treated as headers
               headerRows: 1,
               widths: ['*'],
               alignment: 'center',
               body: [
                 [
                   {
-                    text: 'ATS FOOD EQUIPMENT (INDIA) PVT LTD',
+                    text: offer.quoteHeader.brandName.toUpperCase(),
                     bold: true,
                     alignment: 'center',
                     margin: [0, 5],
@@ -206,10 +198,8 @@ export class CreateOfferComponent implements OnInit {
                     columns: [
                       {
                         alignment: 'left',
-                        layout: 'noBorders', // optional
+                        layout: 'noBorders',
                         table: {
-                          // headers are automatically repeated if the table spans over multiple pages
-                          // you can declare how many rows should be treated as headers
                           headerRows: 1,
                           widths: [160, 'auto', 100, '*'],
 
@@ -222,58 +212,77 @@ export class CreateOfferComponent implements OnInit {
                               },
                             ],
                             ['B-522, Brij Vihar,'],
-                            ['Sahibabad, Ghaziabad 20101,'],
+                            ['Sahibabad, Ghaziabad 201001,'],
                             ['(UP) INDIA'],
                           ],
                         },
                       },
                       {
                         alignment: 'left',
-                        layout: 'noBorders', // optional
+                        layout: 'noBorders',
                         table: {
-                          // headers are automatically repeated if the table spans over multiple pages
-                          // you can declare how many rows should be treated as headers
                           headerRows: 1,
                           widths: [160, 'auto', 100, '*'],
 
                           body: [
                             [
                               {
+                                border: [true, false, false, false],
                                 text: 'Corporate Office:',
                                 bold: true,
                                 color: '#006ab2',
                               },
                             ],
-                            ['Office No. 412, 4th floor,'],
-                            ['Devika Tower, Chander Nagar,'],
-                            ['Ghaziabad 20101, (UP) INDIA'],
+                            [
+                              {
+                                text: 'Office No. 412, 4th floor,',
+                                border: [true, false, false, false],
+                              },
+                            ],
+                            [
+                              {
+                                text: 'Devika Tower, Chander Nagar,',
+                                border: [true, false, false, false],
+                              },
+                            ],
+                            [
+                              {
+                                text: 'Ghaziabad 201011, (UP) INDIA',
+                                border: [true, false, false, false],
+                              },
+                            ],
                           ],
                         },
                       },
                       {
                         alignment: 'left',
-                        layout: 'noBorders', // optional
+                        layout: 'noBorders',
                         table: {
-                          // headers are automatically repeated if the table spans over multiple pages
-                          // you can declare how many rows should be treated as headers
                           headerRows: 1,
                           widths: [185, 'auto', 100, '*'],
 
                           body: [
                             [
                               {
+                                border: [true, false, false, false],
                                 text: 'Contact:',
                                 bold: true,
                                 color: '#006ab2',
                               },
                             ],
-                            ['+91 120 4223815, 9818995569, 9911421085'],
+                            [
+                              {
+                                text: '+91 120 4223815, 9818995569, 9911421085',
+                                border: [true, false, false, false],
+                              },
+                            ],
                             [
                               {
                                 text: [
                                   { text: 'Web: ', bold: true },
                                   'www.atsfoodequipment.com',
                                 ],
+                                border: [true, false, false, false],
                               },
                             ],
                             [
@@ -282,6 +291,7 @@ export class CreateOfferComponent implements OnInit {
                                   { text: 'Email: ', bold: true },
                                   'info@atsfoodequipment.com',
                                 ],
+                                border: [true, false, false, false],
                               },
                             ],
                           ],
@@ -324,12 +334,10 @@ export class CreateOfferComponent implements OnInit {
       },
       content: [
         {
-          layout: 'noBorders', // optional
+          layout: 'noBorders',
           style: 'font9',
           margin: [0, 5],
           table: {
-            // headers are automatically repeated if the table spans over multiple pages
-            // you can declare how many rows should be treated as headers
             headerRows: 1,
             widths: ['*', '*', '*', '*'],
 
@@ -339,24 +347,33 @@ export class CreateOfferComponent implements OnInit {
                 { text: 'Date: ', bold: true },
                 new Date().toLocaleDateString(),
                 { text: 'Ref No: ', bold: true },
-                'ATS/T/22054/22-23',
+                `ATS/${offer.quoteHeader.contactPerson
+                  .split(' ')
+                  .map((n) => n[0])
+                  .join('')}/${offer.quoteHeader.quoteNumber}/${today
+                  .getFullYear()
+                  .toString()
+                  .replace('20', '')}-${(today.getFullYear() + 1)
+                  .toString()
+                  .replace('20', '')}`,
               ],
               [
                 { text: 'Quote# : ', bold: true },
-                '22054',
+                offer.quoteHeader.quoteNumber,
                 { text: 'Validity: ', bold: true },
-                '15 Days',
+                `${Math.ceil(
+                  (this.defaultValidity.getTime() - today.getTime()) /
+                    (1000 * 3600 * 24)
+                )} Days`,
               ],
             ],
           },
         },
         {
-          layout: 'noBorders', // optional
+          layout: 'noBorders',
           style: 'font9',
           margin: [0, 5],
           table: {
-            // headers are automatically repeated if the table spans over multiple pages
-            // you can declare how many rows should be treated as headers
             headerRows: 1,
             margin: [0, 5],
             widths: ['*'],
@@ -365,21 +382,19 @@ export class CreateOfferComponent implements OnInit {
                 {
                   columns: [
                     {
-                      layout: 'noBorders', // optional
+                      layout: 'noBorders',
                       table: {
-                        // headers are automatically repeated if the table spans over multiple pages
-                        // you can declare how many rows should be treated as headers
                         headerRows: 1,
                         widths: ['*'],
 
                         body: [
                           [{ text: 'Customer:', bold: true, color: '#006ab2' }],
-                          [{ text: 'Mr. R.B. Singh', bold: true }],
+                          [{ text: offer.customer.name, bold: true }],
                           [
                             {
                               text: [
                                 { text: 'M/s ', bold: true },
-                                'Rai Poultry',
+                                offer.customer.orgName,
                               ],
                             },
                           ],
@@ -387,7 +402,12 @@ export class CreateOfferComponent implements OnInit {
                             {
                               text: [
                                 { text: 'Add.: ', bold: true },
-                                '112, City Centre, Amritsar, Punjab - 143001',
+                                `${[
+                                  offer.customer.add1,
+                                  offer.customer.add2,
+                                  offer.customer.city,
+                                  offer.customer.state,
+                                ].join(', ')}-${offer.customer.pinCode}`,
                               ],
                             },
                           ],
@@ -395,7 +415,7 @@ export class CreateOfferComponent implements OnInit {
                             {
                               text: [
                                 { text: 'Mob.: ', bold: true },
-                                '+91 98103 77627',
+                                `+91 ${offer.customer.phone}`,
                               ],
                             },
                           ],
@@ -403,10 +423,8 @@ export class CreateOfferComponent implements OnInit {
                       },
                     },
                     {
-                      layout: 'noBorders', // optional
+                      layout: 'noBorders',
                       table: {
-                        // headers are automatically repeated if the table spans over multiple pages
-                        // you can declare how many rows should be treated as headers
                         headerRows: 1,
                         widths: ['*'],
 
@@ -420,16 +438,14 @@ export class CreateOfferComponent implements OnInit {
                           ],
                           [
                             {
-                              text: 'Complete Eviscerating Shackle',
+                              text: offer.quoteHeader.quoteDescription,
                               bold: false,
                             },
                           ],
                           [
                             {
-                              layout: 'noBorders', // optional
+                              layout: 'noBorders',
                               table: {
-                                // headers are automatically repeated if the table spans over multiple pages
-                                // you can declare how many rows should be treated as headers
                                 headerRows: 1,
                                 widths: ['*'],
 
@@ -448,7 +464,7 @@ export class CreateOfferComponent implements OnInit {
                                           text: 'Person: ',
                                           bold: true,
                                         },
-                                        'Ms. Tanu Rustagi',
+                                        offer.quoteHeader.contactPerson,
                                       ],
                                     },
                                   ],
@@ -459,7 +475,7 @@ export class CreateOfferComponent implements OnInit {
                                           text: 'Mob: ',
                                           bold: true,
                                         },
-                                        '+91 98189 95569',
+                                        `+91 ${offer.quoteHeader.contactPhone}`,
                                       ],
                                     },
                                   ],
@@ -467,7 +483,7 @@ export class CreateOfferComponent implements OnInit {
                                     {
                                       text: [
                                         { text: 'Email: ', bold: true },
-                                        'tanu@atsfoodequipment.com',
+                                        offer.quoteHeader.contactEmail,
                                       ],
                                     },
                                   ],
@@ -496,8 +512,15 @@ export class CreateOfferComponent implements OnInit {
             headerRows: 1,
             widths: ['auto', '*', 'auto', 'auto', 'auto', 'auto'],
             body: [
-              ['Name', 'Feature', 'Make', 'Price', 'Quantity', 'Amount'],
-              ...this.invoice.products.map((p) => [
+              [
+                { text: 'Name', bold: true },
+                { text: 'Feature', bold: true },
+                { text: 'Make', bold: true },
+                { text: 'Price', bold: true },
+                { text: 'Quantity', bold: true },
+                { text: 'Amount', bold: true },
+              ],
+              ...offer.products.map((p) => [
                 p.name,
                 p.description,
                 p.make,
@@ -509,16 +532,17 @@ export class CreateOfferComponent implements OnInit {
                 },
               ]),
               [
-                { text: 'Total Amount', colSpan: 5 },
+                { text: 'Total Amount', colSpan: 5, bold: true },
                 {},
                 {},
                 {},
                 {},
                 {
-                  text: `${this.invoice.products
+                  text: `${offer.products
                     .reduce((sum, p) => sum + p.quantity * p.price, 0)
                     .toFixed(2)}`,
                   alignment: 'right',
+                  bold: true,
                 },
               ],
             ],
@@ -527,7 +551,7 @@ export class CreateOfferComponent implements OnInit {
         {
           style: 'font9',
           margin: [0, 5],
-          layout: 'lightHorizontalLines', // optional
+          layout: 'lightHorizontalLines',
           table: {
             headerRows: 1,
             widths: ['*'],
@@ -541,7 +565,7 @@ export class CreateOfferComponent implements OnInit {
                     headerRows: 0,
                     widths: ['auto', '*'],
                     body: [
-                      ['Price', 'Ex-Ghaziaad(custom cleared, duty paid)'],
+                      ['Price', 'Ex-Ghazibaad(custom cleared, duty paid)'],
                       [
                         'Payment terms',
                         '100 % advance along with purchase order',
@@ -582,13 +606,36 @@ export class CreateOfferComponent implements OnInit {
             ],
           },
         },
+        {
+          margin: [0, 25],
+          columns: [
+            [
+              {
+                qr: `https://www.atsfoodequipment.com/`,
+                fit: '50',
+              },
+            ],
+            [
+              {
+                style: 'font9',
+                text: [
+                  `for `,
+                  {
+                    text: offer.quoteHeader.brandName,
+                    color: '#006ab2',
+                  },
+                ],
+                alignment: 'right',
+              },
+            ],
+          ],
+        },
       ],
       images: {
         logo: 'https://nikhilrstg18.github.io/offer_director/assets/logo.png',
         quality:
           'https://nikhilrstg18.github.io/offer_director/assets/quality.png',
       },
-      defaultStyle: {},
       styles: {
         font9: {
           fontSize: 9,
@@ -603,7 +650,24 @@ export class CreateOfferComponent implements OnInit {
           margin: [0, 5],
         },
       },
+      // watermark: {
+      //   text: offer.quoteHeader.brandName,
+      //   color: '#006ab2',
+      //   opacity: 0.1,
+      //   bold: true,
+      //   italics: true,
+      // },
     };
-    pdfMake.createPdf(dd as any).open();
+    switch (action) {
+      case 'view':
+        pdfMake.createPdf(dd as any).open();
+        break;
+      case 'download':
+        pdfMake.createPdf(dd as any).download();
+        break;
+      case 'print':
+        pdfMake.createPdf(dd as any).print();
+        break;
+    }
   }
 }

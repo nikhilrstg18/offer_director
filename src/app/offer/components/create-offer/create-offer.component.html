@@ -23,6 +23,18 @@
           </div>
           <div class="col-lg-3 col-md-6 col-sm-12">
             <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Quote/Project Description</mat-label>
+              <input
+                type="text"
+                matInput
+                placeholder="(required | text)"
+                formControlName="quoteDescription"
+                required
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-12">
+            <mat-form-field appearance="fill" class="w-100">
               <mat-label>Contact Person</mat-label>
               <input
                 type="text"
@@ -118,6 +130,17 @@
                 matInput
                 formControlName="orgName"
                 placeholder="(required | text)"
+                required
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-12">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Phone</mat-label>
+              <input
+                matInput
+                formControlName="phone"
+                placeholder="(required | contact no)"
                 required
               />
             </mat-form-field>
@@ -303,14 +326,30 @@
       <ng-template matStepLabel>Generate Offer</ng-template>
 
       <div>
-        <div class="text-center">
+        <div class="d-flex justify-content-around p-4">
           <button
-            mat-mini-fab
+            mat-fab
             color="primary"
-            (click)="downloadOffer()"
-            title="Check console for form details"
+            (click)="downloadOffer('view')"
+            title="View Offer"
+          >
+            <mat-icon>remove_red_eye</mat-icon>
+          </button>
+          <button
+            mat-fab
+            color="primary"
+            (click)="downloadOffer('download')"
+            title="Download offer"
           >
             <mat-icon>cloud_download</mat-icon>
+          </button>
+          <button
+            mat-fab
+            color="primary"
+            (click)="downloadOffer('print')"
+            title="Print Offer"
+          >
+            <mat-icon> local_printshop</mat-icon>
           </button>
         </div>
         <mat-divider class="mb-2 mt-2"></mat-divider>
@@ -319,26 +358,4 @@
       </div>
     </mat-step>
   </mat-stepper>
-</div>
-<div class="container">
-  <div id="pdfTable" #pdfTable>
-    <div style="padding: 2 0">
-      <div style="display: flex; width: 100%">
-        <img
-          src="https://nikhilrstg18.github.io/offer_director/assets/logo.png"
-          alt="ATS"
-          width="136"
-        />
-        <span style="flex: 1 1 auto"></span>
-        <img
-          src="https://nikhilrstg18.github.io/offer_director/assets/quality.png"
-          alt="ATS"
-          width="40"
-        />
-      </div>
-    </div>
-  </div>
-  <button class="btn btn-primary" (click)="downloadAsPDF()">
-    Export To PDF
-  </button>
 </div>
