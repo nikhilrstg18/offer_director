@@ -179,7 +179,7 @@ export class CreateOfferComponent implements OnInit {
       // [left, top, right, bottom] or [horizontal, vertical] or just a number for equal margins
       pageMargins: [60, 100, 60, 100],
       footer: {
-        margin: [15, 0, 15, -20],
+        margin: [15, 0],
         columns: [
           {
             alignment: 'left',
@@ -188,66 +188,116 @@ export class CreateOfferComponent implements OnInit {
               // headers are automatically repeated if the table spans over multiple pages
               // you can declare how many rows should be treated as headers
               headerRows: 1,
-              widths: [140, 'auto', 100, '*'],
-
+              widths: ['*'],
+              alignment: 'center',
               body: [
-                [{ text: 'Registerd Office:', bold: true }],
-                ['B-522, Brij Vihar,'],
+                [
+                  {
+                    text: 'ATS FOOD EQUIPMENT (INDIA) PVT LTD',
+                    bold: true,
+                    alignment: 'center',
+                    margin: [0, 5],
+                    style: 'font10',
+                    color: '#006ab2',
+                  },
+                ],
+                [
+                  {
+                    columns: [
+                      {
+                        alignment: 'left',
+                        layout: 'noBorders', // optional
+                        table: {
+                          // headers are automatically repeated if the table spans over multiple pages
+                          // you can declare how many rows should be treated as headers
+                          headerRows: 1,
+                          widths: [160, 'auto', 100, '*'],
+
+                          body: [
+                            [
+                              {
+                                text: 'Registerd Office:',
+                                bold: true,
+                                color: '#006ab2',
+                              },
+                            ],
+                            ['B-522, Brij Vihar,'],
+                            ['Sahibabad, Ghaziabad 20101,'],
+                            ['(UP) INDIA'],
+                          ],
+                        },
+                      },
+                      {
+                        alignment: 'left',
+                        layout: 'noBorders', // optional
+                        table: {
+                          // headers are automatically repeated if the table spans over multiple pages
+                          // you can declare how many rows should be treated as headers
+                          headerRows: 1,
+                          widths: [160, 'auto', 100, '*'],
+
+                          body: [
+                            [
+                              {
+                                text: 'Corporate Office:',
+                                bold: true,
+                                color: '#006ab2',
+                              },
+                            ],
+                            ['Office No. 412, 4th floor,'],
+                            ['Devika Tower, Chander Nagar,'],
+                            ['Ghaziabad 20101, (UP) INDIA'],
+                          ],
+                        },
+                      },
+                      {
+                        alignment: 'left',
+                        layout: 'noBorders', // optional
+                        table: {
+                          // headers are automatically repeated if the table spans over multiple pages
+                          // you can declare how many rows should be treated as headers
+                          headerRows: 1,
+                          widths: [185, 'auto', 100, '*'],
+
+                          body: [
+                            [
+                              {
+                                text: 'Contact:',
+                                bold: true,
+                                color: '#006ab2',
+                              },
+                            ],
+                            ['+91 120 4223815, 9818995569, 9911421085'],
+                            [
+                              {
+                                text: [
+                                  { text: 'Web: ', bold: true },
+                                  'www.atsfoodequipment.com',
+                                ],
+                              },
+                            ],
+                            [
+                              {
+                                text: [
+                                  { text: 'Email: ', bold: true },
+                                  'info@atsfoodequipment.com',
+                                ],
+                              },
+                            ],
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                ],
                 ['Sahibabad, Ghaziabad 20101,'],
                 ['(UP) INDIA)'],
               ],
             },
           },
-          {
-            alignment: 'left',
-            layout: 'headerLineOnly', // optional
-            table: {
-              // headers are automatically repeated if the table spans over multiple pages
-              // you can declare how many rows should be treated as headers
-              headerRows: 1,
-              widths: [140, 'auto', 100, '*'],
-
-              body: [
-                [{ text: 'Corporate Office:', bold: true }],
-                ['Office No. 412, 4th floor,'],
-                ['Devika Tower, Chander Nagar,'],
-                ['Ghaziabad 20101, (UP) INDIA)'],
-              ],
-            },
-          },
-          {
-            alignment: 'left',
-            layout: 'headerLineOnly', // optional
-            table: {
-              // headers are automatically repeated if the table spans over multiple pages
-              // you can declare how many rows should be treated as headers
-              headerRows: 1,
-              widths: [160, 'auto', 100, '*'],
-
-              body: [
-                [{ text: 'Contact:', bold: true }],
-                ['+91 120 4223815, 9818995569, 9911421085'],
-                [
-                  {
-                    text: [
-                      { text: 'Web: ', bold: true },
-                      'www.atsfoodequipment.com',
-                    ],
-                  },
-                ],
-                [
-                  {
-                    text: [
-                      { text: 'Email: ', bold: true },
-                      'info@atsfoodequipment.com',
-                    ],
-                  },
-                ],
-              ],
-            },
-          },
         ],
-        style: 'font20',
+
+        style: 'font9',
       },
       header: {
         margin: [15, 0, 15, -20],
@@ -274,14 +324,263 @@ export class CreateOfferComponent implements OnInit {
       },
       content: [
         {
-          columns: [
-            [
-              {
-                text: 'this is a test',
-                style: 'sectionHeader',
-              },
+          layout: 'noBorders', // optional
+          style: 'font9',
+          margin: [0, 5],
+          table: {
+            // headers are automatically repeated if the table spans over multiple pages
+            // you can declare how many rows should be treated as headers
+            headerRows: 1,
+            widths: ['*', '*', '*', '*'],
+
+            body: [
+              ['', '', '', ''],
+              [
+                { text: 'Date: ', bold: true },
+                new Date().toLocaleDateString(),
+                { text: 'Ref No: ', bold: true },
+                'ATS/T/22054/22-23',
+              ],
+              [
+                { text: 'Quote# : ', bold: true },
+                '22054',
+                { text: 'Validity: ', bold: true },
+                '15 Days',
+              ],
             ],
-          ],
+          },
+        },
+        {
+          layout: 'noBorders', // optional
+          style: 'font9',
+          margin: [0, 5],
+          table: {
+            // headers are automatically repeated if the table spans over multiple pages
+            // you can declare how many rows should be treated as headers
+            headerRows: 1,
+            margin: [0, 5],
+            widths: ['*'],
+            body: [
+              [
+                {
+                  columns: [
+                    {
+                      layout: 'noBorders', // optional
+                      table: {
+                        // headers are automatically repeated if the table spans over multiple pages
+                        // you can declare how many rows should be treated as headers
+                        headerRows: 1,
+                        widths: ['*'],
+
+                        body: [
+                          [{ text: 'Customer:', bold: true, color: '#006ab2' }],
+                          [{ text: 'Mr. R.B. Singh', bold: true }],
+                          [
+                            {
+                              text: [
+                                { text: 'M/s ', bold: true },
+                                'Rai Poultry',
+                              ],
+                            },
+                          ],
+                          [
+                            {
+                              text: [
+                                { text: 'Add.: ', bold: true },
+                                '112, City Centre, Amritsar, Punjab - 143001',
+                              ],
+                            },
+                          ],
+                          [
+                            {
+                              text: [
+                                { text: 'Mob.: ', bold: true },
+                                '+91 98103 77627',
+                              ],
+                            },
+                          ],
+                        ],
+                      },
+                    },
+                    {
+                      layout: 'noBorders', // optional
+                      table: {
+                        // headers are automatically repeated if the table spans over multiple pages
+                        // you can declare how many rows should be treated as headers
+                        headerRows: 1,
+                        widths: ['*'],
+
+                        body: [
+                          [
+                            {
+                              text: 'Quote/Project Description:',
+                              bold: true,
+                              color: '#006ab2',
+                            },
+                          ],
+                          [
+                            {
+                              text: 'Complete Eviscerating Shackle',
+                              bold: false,
+                            },
+                          ],
+                          [
+                            {
+                              layout: 'noBorders', // optional
+                              table: {
+                                // headers are automatically repeated if the table spans over multiple pages
+                                // you can declare how many rows should be treated as headers
+                                headerRows: 1,
+                                widths: ['*'],
+
+                                body: [
+                                  [
+                                    {
+                                      text: 'Contact:',
+                                      bold: true,
+                                      color: '#006ab2',
+                                    },
+                                  ],
+                                  [
+                                    {
+                                      text: [
+                                        {
+                                          text: 'Person: ',
+                                          bold: true,
+                                        },
+                                        'Ms. Tanu Rustagi',
+                                      ],
+                                    },
+                                  ],
+                                  [
+                                    {
+                                      text: [
+                                        {
+                                          text: 'Mob: ',
+                                          bold: true,
+                                        },
+                                        '+91 98189 95569',
+                                      ],
+                                    },
+                                  ],
+                                  [
+                                    {
+                                      text: [
+                                        { text: 'Email: ', bold: true },
+                                        'tanu@atsfoodequipment.com',
+                                      ],
+                                    },
+                                  ],
+                                ],
+                              },
+                            },
+                          ],
+                        ],
+                      },
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        {
+          text: 'Items',
+          style: 'sectionHeader',
+          color: '#006ab2',
+        },
+        {
+          style: 'font9',
+          margin: [0, 5],
+          table: {
+            headerRows: 1,
+            widths: ['auto', '*', 'auto', 'auto', 'auto', 'auto'],
+            body: [
+              ['Name', 'Feature', 'Make', 'Price', 'Quantity', 'Amount'],
+              ...this.invoice.products.map((p) => [
+                p.name,
+                p.description,
+                p.make,
+                { text: `${p.price}`, alignment: 'right' },
+                { text: `${p.quantity}`, alignment: 'right' },
+                {
+                  text: `${(p.price * p.quantity).toFixed(2)}`,
+                  alignment: 'right',
+                },
+              ]),
+              [
+                { text: 'Total Amount', colSpan: 5 },
+                {},
+                {},
+                {},
+                {},
+                {
+                  text: `${this.invoice.products
+                    .reduce((sum, p) => sum + p.quantity * p.price, 0)
+                    .toFixed(2)}`,
+                  alignment: 'right',
+                },
+              ],
+            ],
+          },
+        },
+        {
+          style: 'font9',
+          margin: [0, 5],
+          layout: 'lightHorizontalLines', // optional
+          table: {
+            headerRows: 1,
+            widths: ['*'],
+            body: [
+              [{ text: 'Terms & Condition', bold: true, color: '#006ab2' }],
+              [
+                {
+                  style: 'font9',
+                  layout: 'noBorders',
+                  table: {
+                    headerRows: 0,
+                    widths: ['auto', '*'],
+                    body: [
+                      ['Price', 'Ex-Ghaziaad(custom cleared, duty paid)'],
+                      [
+                        'Payment terms',
+                        '100 % advance along with purchase order',
+                      ],
+                      ['GST & Freight', 'Extra at actual'],
+                      [
+                        'Delivery',
+                        '2 to 3 weeks tentatively from the date of receipt of order and advance',
+                      ],
+                    ],
+                  },
+                },
+              ],
+              [
+                {
+                  style: 'font9',
+                  layout: 'noBorders',
+                  table: {
+                    headerRows: 0,
+                    widths: ['auto', '*'],
+                    body: [
+                      [
+                        { text: 'Note', bold: true },
+                        {
+                          ol: [
+                            'The calculations made are as per current exchange rate. Any fluctuation in the exchange rate will affect the price.',
+                            'Price variation on account of statutory changes in rates of taxes and duties namely Excise duty, Custom Duty, GST, Works Contract Tax, levies charge, octroi charge, etc. shall be payable if it comes into force due to government notification.',
+                            'Due to current scenario, delivery schedule may differ. Due to this Supplier will not be responsible for delay in delivery.',
+                            'Order once placed, cannot be canceled.',
+                          ],
+                          fillColor: '#f9d776',
+                        },
+                      ],
+                    ],
+                  },
+                },
+              ],
+            ],
+          },
         },
       ],
       images: {
@@ -291,14 +590,17 @@ export class CreateOfferComponent implements OnInit {
       },
       defaultStyle: {},
       styles: {
-        font20: {
+        font9: {
           fontSize: 9,
+        },
+        font10: {
+          fontSize: 10,
         },
         sectionHeader: {
           bold: true,
           decoration: 'underline',
-          fontSize: 14,
-          margin: [0, 15, 0, 15],
+          fontSize: 9,
+          margin: [0, 5],
         },
       },
     };
