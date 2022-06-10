@@ -13,3 +13,6 @@ body {
 .flex-expand {
   flex: 1 1 auto;
 }
+.mat-form-field-appearance-outline .mat-form-field-prefix {
+  top: 0em !important;
+}

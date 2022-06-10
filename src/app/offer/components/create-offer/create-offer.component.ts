@@ -3,6 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+import { IndCurrencyPipe } from 'src/app/shared/pipes/ind-currency.pipe';
 declare var require: any;
 
 const htmlToPdfmake = require('html-to-pdfmake');
@@ -66,14 +67,15 @@ export class CreateOfferComponent implements OnInit {
   form!: FormGroup;
   isDisabled: boolean = true;
   durationInSeconds: number = 5;
-  invoice: Offer = new Offer();
+  offer: Offer = new Offer();
 
   @ViewChild('pdfTable')
   pdfTable!: ElementRef;
 
   constructor(
     private _formBuilder: FormBuilder,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private _indCurrency: IndCurrencyPipe
   ) {}
 
   ngOnInit(): void {
@@ -90,7 +92,7 @@ export class CreateOfferComponent implements OnInit {
     this.customerForm = this._formBuilder.group({
       name: ['', Validators.required],
       orgName: ['', Validators.required],
-      phone: ['', Validators.required],
+      phone: ['', [Validators.required, Validators.maxLength(10)]],
       email: ['', Validators.compose([Validators.required, Validators.email])],
       add1: [
         '',
@@ -110,18 +112,16 @@ export class CreateOfferComponent implements OnInit {
       products: this.products,
     });
   }
-
   get products() {
     return this.productForm.get('products') as FormArray;
   }
-
   getProductGroup(): FormGroup {
     return this._formBuilder.group({
       code: [''],
       name: ['', Validators.required],
       description: ['', Validators.required],
       make: ['', Validators.required],
-      quantity: ['', Validators.required],
+      quantity: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
       price: ['', Validators.required],
     });
   }
@@ -272,7 +272,7 @@ export class CreateOfferComponent implements OnInit {
                             ],
                             [
                               {
-                                text: '+91 120 4223815, 9818995569, 9911421085',
+                                text: '+91 1204223815, 9818995569, 9911421085',
                                 border: [true, false, false, false],
                               },
                             ],
@@ -524,10 +524,15 @@ export class CreateOfferComponent implements OnInit {
                 p.name,
                 p.description,
                 p.make,
-                { text: `${p.price}`, alignment: 'right' },
+                {
+                  text: `${this._indCurrency.transform(p.price.toFixed(2))}`,
+                  alignment: 'right',
+                },
                 { text: `${p.quantity}`, alignment: 'right' },
                 {
-                  text: `${(p.price * p.quantity).toFixed(2)}`,
+                  text: `${this._indCurrency.transform(
+                    (p.price * p.quantity).toFixed(2)
+                  )}`,
                   alignment: 'right',
                 },
               ]),
@@ -538,9 +543,11 @@ export class CreateOfferComponent implements OnInit {
                 {},
                 {},
                 {
-                  text: `${offer.products
-                    .reduce((sum, p) => sum + p.quantity * p.price, 0)
-                    .toFixed(2)}`,
+                  text: `${this._indCurrency.transform(
+                    offer.products
+                      .reduce((sum, p) => sum + p.quantity * p.price, 0)
+                      .toFixed(2)
+                  )}`,
                   alignment: 'right',
                   bold: true,
                 },
@@ -613,9 +620,8 @@ export class CreateOfferComponent implements OnInit {
               {
                 qr: `https://www.atsfoodequipment.com/`,
                 fit: '50',
+                alignment: 'right',
               },
-            ],
-            [
               {
                 style: 'font9',
                 text: [

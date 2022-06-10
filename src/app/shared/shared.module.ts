@@ -1,6 +1,7 @@
 import { LayoutModule } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { AngularFireModule } from '@angular/fire/compat';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -11,15 +12,26 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
+import { environment } from 'src/environments/environment';
 import { LoginComponent } from './components/login/login.component';
-import { NavigationComponent } from './components/navigation/navigation.component';
+import { SignupComponent } from './components/signup/signup.component';
+import { AuthService } from './services/auth.service';
+import { IndCurrencyPipe } from './pipes/ind-currency.pipe';
+import { ForgetComponent } from './components/forget/forget.component';
+import { VerifyComponent } from './components/verify/verify.component';
 
 @NgModule({
-  declarations: [LoginComponent, NavigationComponent],
+  declarations: [
+    LoginComponent,
+    SignupComponent,
+    IndCurrencyPipe,
+    ForgetComponent,
+    VerifyComponent,
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -40,10 +52,10 @@ import { NavigationComponent } from './components/navigation/navigation.componen
     MatDatepickerModule,
     MatNativeDateModule,
     MatSnackBarModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
   ],
   exports: [
     LoginComponent,
-    NavigationComponent,
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
@@ -62,7 +74,15 @@ import { NavigationComponent } from './components/navigation/navigation.componen
     MatDatepickerModule,
     MatNativeDateModule,
     MatSnackBarModule,
+    AngularFireModule,
   ],
   // no providers here
 })
-export class SharedModule {}
+export class SharedModule {
+  public static root() {
+    return {
+      ngModule: SharedModule,
+      providers: [AuthService, IndCurrencyPipe],
+    };
+  }
+}

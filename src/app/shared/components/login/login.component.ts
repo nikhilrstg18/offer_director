@@ -1,6 +1,8 @@
+import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { filter, Subject, take, takeUntil } from 'rxjs';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'od-login',
@@ -8,46 +10,32 @@ import { filter, Subject, take, takeUntil } from 'rxjs';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  public loginValid = true;
-  public username = '';
-  public password = '';
+  public loginValid = false;
+  username = new FormControl('', [Validators.required, Validators.email]);
+  password = new FormControl('', [
+    Validators.required,
+    Validators.minLength(6),
+  ]);
+  hide = true;
 
   private _destroySub$ = new Subject<void>();
   private readonly returnUrl: string;
 
-  constructor(
-    private _route: ActivatedRoute,
-    private _router: Router // private _authService: AuthService
-  ) {
-    this.returnUrl = this._route.snapshot.queryParams['returnUrl'] || '/home';
+  constructor(private _auth: AuthService, private _route: ActivatedRoute) {
+    this.returnUrl =
+      this._route.snapshot.queryParams['returnUrl'] || '/navigation/home';
   }
 
-  public ngOnInit(): void {
-    // this._authService.isAuthenticated$.pipe(
-    //   filter((isAuthenticated: boolean) => isAuthenticated),
-    //   takeUntil(this._destroySub$)
-    // ).subscribe( _ => this._router.navigateByUrl(this.returnUrl));
-  }
+  public ngOnInit(): void {}
 
   public ngOnDestroy(): void {
     this._destroySub$.next();
   }
 
   public onSubmit(): void {
-    this.loginValid = false;
-    if (this.username == 'admin' && this.password == 'admin') {
-      this._router.navigateByUrl('/home');
-      this.loginValid = true;
-    }
-
-    // this._authService.login(this.username, this.password).pipe(
-    //   take(1)
-    // ).subscribe({
-    //   next: _ => {
-    //     this.loginValid = true;
-    //     this._router.navigateByUrl('/game');
-    //   },
-    //   error: _ => this.loginValid = false
-    // });
+    this._auth.loginWithEmailAndPassword(
+      this.username.value,
+      this.password.value
+    );
   }
 }

@@ -1,25 +1,37 @@
+import { VerifyComponent } from './shared/components/verify/verify.component';
+import { NavigationComponent } from './navigation/components/navigation/navigation.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { LoginComponent } from './shared/components/login/login.component';
+import { SignupComponent } from './shared/components/signup/signup.component';
+import { ForgetComponent } from './shared/components/forget/forget.component';
 
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./home/home.module').then((h) => h.HomeModule),
+    redirectTo: 'login',
+    pathMatch: 'full',
   },
   {
-    path: 'admin',
-    loadChildren: () =>
-      import('./admin/admin.module').then((a) => a.AdminModule),
+    path: 'login',
+    component: LoginComponent,
   },
   {
-    path: 'offer',
-    loadChildren: () =>
-      import('./offer/offer.module').then((o) => o.OfferModule),
+    path: 'signup',
+    component: SignupComponent,
   },
   {
-    path: 'products',
+    path: 'forget',
+    component: ForgetComponent,
+  },
+  {
+    path: 'verify',
+    component: VerifyComponent,
+  },
+  {
+    path: 'navigation',
     loadChildren: () =>
-      import('./products/products.module').then((p) => p.ProductsModule),
+      import('./navigation/navigation.module').then((m) => m.NavigationModule),
   },
   {
     path: '**',

@@ -1,17 +1,11 @@
-import { HomeComponent } from './components/home/home.component';
-import { LoginComponent } from './../shared/components/login/login.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from './components/home/home.component';
 
 const routes: Routes = [
   {
     path: '',
-    children: [
-      {
-        path: '',
-        component: HomeComponent,
-      },
-    ],
+    component: HomeComponent,
   },
 ];
 
@@ -19,4 +13,6 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class HomeRoutingModule {}
+export class HomeRoutingModule {
+  static components: any[] = [HomeComponent];
+}

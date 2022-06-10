@@ -2,17 +2,13 @@
   <div>
     <mat-card>
       <mat-card-content>
-        <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
+        <form #signupForm="ngForm" (ngSubmit)="signUp()">
           <img
             class="mb-4"
             src="../../../../assets/logo.png"
             alt="ATS"
             width="60%"
           />
-          <!-- <mat-error *ngIf="!loginValid">
-            The username and password were not recognized
-          </mat-error> -->
-          <!--   username -->
           <mat-form-field appearance="outline">
             <mat-label>Username</mat-label>
             <input
@@ -33,7 +29,6 @@
               Invalid email address
             </mat-error>
           </mat-form-field>
-          <!-- password -->
           <mat-form-field appearance="outline">
             <mat-label>Password</mat-label>
             <input
@@ -55,37 +50,27 @@
               Should be min. 6 characters
             </mat-error>
           </mat-form-field>
-
           <button
             class="m-2"
             mat-raised-button
             color="primary"
             [disabled]="!username.valid || !password.valid"
-            title="Login"
+            title="Sign Up"
           >
-            <mat-icon color="white">login</mat-icon>
+            <mat-icon color="white"
+              ><span class="material-icons-outlined">
+                how_to_reg
+              </span></mat-icon
+            >
           </button>
-          <div class="d-flex justify-content-between">
+          <div>
             <div class="m-2">
               <a
-                routerLink="/signup"
+                routerLink="/login"
                 class="text-decoration-none"
-                title="Signup?"
-              >
-                <mat-icon color="primary"
-                  ><span class="material-icons-outlined">
-                    how_to_reg
-                  </span></mat-icon
-                >
+                title="have a account? Login"
+                ><mat-icon color="primary">login</mat-icon>
               </a>
-            </div>
-            <div class="m-2">
-              <a
-                routerLink="/forget"
-                class="text-decoration-none"
-                title="Forget Password?"
-                ><mat-icon color="primary">password</mat-icon></a
-              >
             </div>
           </div>
         </form>

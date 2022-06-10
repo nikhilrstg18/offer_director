@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class AppComponent implements OnInit {
   title: string = 'Offer Director';
-  loginValid: boolean = true;
+  loginValid: boolean = false;
 
   constructor(private _router: Router) {}
 

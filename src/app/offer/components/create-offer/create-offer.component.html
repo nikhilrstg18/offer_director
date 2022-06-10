@@ -4,73 +4,85 @@
       <form [formGroup]="headerForm">
         <ng-template matStepLabel>
           <span> Add Quote</span>
-          <span *ngIf="headerForm.dirty && headerForm.status == 'INVALID'"
+          <span *ngIf="headerForm.touched && !headerForm.valid"
             ><mat-icon color="warn">error</mat-icon></span
           >
         </ng-template>
         <div class="row">
           <div class="col-lg-3 col-md-6 col-sm-12">
-            <mat-form-field appearance="fill" class="w-100">
+            <mat-form-field appearance="outline" class="w-100">
               <mat-label>Quote Number</mat-label>
               <input
-                type="number"
                 matInput
-                placeholder="(required | number)"
+                type="number"
+                placeholder="Ex. 22222"
                 formControlName="quoteNumber"
+                name="quoteNumber"
                 required
               />
+              <mat-error *ngIf="!headerForm.controls['quoteNumber'].valid">
+                Required
+              </mat-error>
             </mat-form-field>
           </div>
           <div class="col-lg-3 col-md-6 col-sm-12">
-            <mat-form-field appearance="fill" class="w-100">
+            <mat-form-field appearance="outline" class="w-100">
               <mat-label>Quote/Project Description</mat-label>
               <input
-                type="text"
                 matInput
-                placeholder="(required | text)"
+                type="text"
+                placeholder="Ex. Complete Eviscerating Shackle"
                 formControlName="quoteDescription"
+                name="quoteDescription"
                 required
               />
+              <mat-error *ngIf="!headerForm.controls['quoteDescription'].valid">
+                Required
+              </mat-error>
             </mat-form-field>
           </div>
           <div class="col-lg-3 col-md-6 col-sm-12">
-            <mat-form-field appearance="fill" class="w-100">
+            <mat-form-field appearance="outline" class="w-100">
               <mat-label>Contact Person</mat-label>
               <input
+                matInput
                 type="text"
-                matInput
-                placeholder="(readonly | text)"
+                placeholder="Ex. Complete Eviscerating Shackle"
                 formControlName="contactPerson"
+                name="contactPerson"
                 readonly="true"
               />
             </mat-form-field>
           </div>
           <div class="col-lg-3 col-md-6 col-sm-12">
-            <mat-form-field appearance="fill" class="w-100">
-              <mat-label>Contact Phone</mat-label>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Contact Person</mat-label>
+              <span matPrefix>+91&nbsp;</span>
               <input
-                type="tel"
                 matInput
-                placeholder="(readonly | text)"
+                type="tel"
+                placeholder="Ex. 9810098100"
                 formControlName="contactPhone"
+                name="contactPhone"
                 readonly="true"
               />
             </mat-form-field>
           </div>
           <div class="col-lg-3 col-md-6 col-sm-12">
-            <mat-form-field appearance="fill" class="w-100">
+            <mat-form-field appearance="outline" class="w-100">
               <mat-label>Contact Email</mat-label>
               <input
-                type="email"
                 matInput
-                placeholder="(readonly | text)"
+                type="email"
+                placeholder="Ex. abc@zyx.com"
                 formControlName="contactEmail"
+                name="contactEmail"
                 readonly="true"
               />
             </mat-form-field>
           </div>
           <div class="col-lg-3 col-md-6 col-sm-12">
-            <mat-form-field color="primary" appearance="fill" class="w-100">
+            <mat-form-field color="primary" appearance="outline" class="w-100">
               <mat-label>Valid till Date</mat-label>
               <input
                 matInput
@@ -83,6 +95,9 @@
                 [for]="picker1"
               ></mat-datepicker-toggle>
               <mat-datepicker #picker1></mat-datepicker>
+              <mat-error *ngIf="!headerForm.controls['validity'].valid">
+                Required
+              </mat-error>
             </mat-form-field>
           </div>
         </div>
@@ -96,109 +111,151 @@
       <form [formGroup]="customerForm">
         <ng-template matStepLabel>
           <span> Add Customer</span>
-          <span *ngIf="customerForm.dirty && customerForm.status == 'INVALID'"
+          <span *ngIf="customerForm.touched && !customerForm.valid"
             ><mat-icon color="warn">error</mat-icon></span
           ></ng-template
         >
         <div class="row">
           <div class="col-lg-3 col-md-6 col-sm-12">
-            <mat-form-field appearance="fill" class="w-100">
+            <mat-form-field appearance="outline" class="w-100">
               <mat-label>Name</mat-label>
               <input
                 matInput
-                placeholder="(required | text)"
+                type="text"
+                placeholder="Ex. Jhon Doe"
                 formControlName="name"
+                name="name"
                 required
               />
+              <mat-error *ngIf="!customerForm.controls['name'].valid">
+                Required
+              </mat-error>
             </mat-form-field>
           </div>
           <div class="col-lg-3 col-md-6 col-sm-12">
-            <mat-form-field appearance="fill" class="w-100">
+            <mat-form-field appearance="outline" class="w-100">
               <mat-label>Email</mat-label>
               <input
                 matInput
+                type="email"
+                placeholder="Ex. abc@zyx.com"
                 formControlName="email"
-                placeholder="(required | email)"
-                requireds
+                name="email"
+                required
               />
+              <mat-error *ngIf="!customerForm.controls['email'].valid">
+                Invalid Email
+              </mat-error>
             </mat-form-field>
           </div>
           <div class="col-lg-3 col-md-6 col-sm-12">
-            <mat-form-field appearance="fill" class="w-100">
+            <mat-form-field appearance="outline" class="w-100">
+              <span matPrefix>M/s&nbsp;</span>
               <mat-label>Organization</mat-label>
               <input
                 matInput
+                type="text"
+                placeholder="Ex. ABC Pvt Ltd"
                 formControlName="orgName"
-                placeholder="(required | text)"
+                name="orgName"
                 required
               />
+              <mat-error *ngIf="!customerForm.controls['orgName'].valid">
+                Required
+              </mat-error>
             </mat-form-field>
           </div>
           <div class="col-lg-3 col-md-6 col-sm-12">
-            <mat-form-field appearance="fill" class="w-100">
-              <mat-label>Phone</mat-label>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Telephone</mat-label>
+              <span matPrefix>+91&nbsp;</span>
               <input
                 matInput
+                type="tel"
+                placeholder="Ex. 9810098100"
                 formControlName="phone"
-                placeholder="(required | contact no)"
+                name="phone"
                 required
               />
+              <mat-error *ngIf="!customerForm.controls['phone'].valid">
+                Required | Upto 10 digits allowed
+              </mat-error>
             </mat-form-field>
           </div>
           <div class="col-lg-3 col-md-6 col-sm-12">
-            <mat-form-field appearance="fill" class="w-100">
+            <mat-form-field appearance="outline" class="w-100">
               <mat-label>Address 1</mat-label>
               <input
                 matInput
+                type="text"
+                placeholder="Ex. 412, Block #"
                 formControlName="add1"
-                placeholder="(required | upto 100 chars)"
+                name="add1"
                 required
               />
+              <mat-error *ngIf="!customerForm.controls['add1'].valid">
+                Required
+              </mat-error>
             </mat-form-field>
           </div>
           <div class="col-lg-3 col-md-6 col-sm-12">
-            <mat-form-field appearance="fill" class="w-100">
+            <mat-form-field appearance="outline" class="w-100">
               <mat-label>Address 2</mat-label>
               <input
                 matInput
+                type="text"
+                placeholder="Ex. StreetName, Area"
                 formControlName="add2"
-                placeholder="(upto 100 chars)"
+                name="add2"
               />
             </mat-form-field>
           </div>
           <div class="col-lg-3 col-md-6 col-sm-12">
-            <mat-form-field appearance="fill" class="w-100">
+            <mat-form-field appearance="outline" class="w-100">
               <mat-label>City</mat-label>
               <input
                 matInput
+                type="text"
+                placeholder="Ex. New Delhi"
                 formControlName="city"
-                placeholder="(required | text)"
+                name="city"
                 required
               />
+              <mat-error *ngIf="!customerForm.controls['city'].valid">
+                Required
+              </mat-error>
             </mat-form-field>
           </div>
           <div class="col-lg-3 col-md-6 col-sm-12">
-            <mat-form-field appearance="fill" class="w-100">
+            <mat-form-field appearance="outline" class="w-100">
               <mat-label>State</mat-label>
               <input
                 matInput
+                type="text"
+                placeholder="Ex. Delhi"
                 formControlName="state"
-                placeholder="(required | text)"
+                name="state"
                 required
               />
+              <mat-error *ngIf="!customerForm.controls['state'].valid">
+                Required
+              </mat-error>
             </mat-form-field>
           </div>
           <div class="col-lg-3 col-md-6 col-sm-12">
-            <mat-form-field appearance="fill" class="w-100">
-              <mat-label>Pin Code</mat-label>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Postal Code</mat-label>
               <input
-                type="number"
-                step="1"
                 matInput
+                type="text"
+                placeholder="Ex. 110092"
                 formControlName="pinCode"
-                placeholder="(required | text)"
+                name="pinCode"
                 required
               />
+              <mat-error *ngIf="!customerForm.controls['pinCode'].valid">
+                Required
+              </mat-error>
             </mat-form-field>
           </div>
         </div>
@@ -246,60 +303,84 @@
             </h3>
             <div class="row">
               <div class="col-lg-3 col-md-6 col-sm-12">
-                <mat-form-field appearance="fill" class="w-100">
+                <mat-form-field appearance="outline" class="w-100">
                   <mat-label>Name</mat-label>
                   <input
-                    type="text"
                     matInput
-                    placeholder="(required | text)"
+                    type="text"
+                    placeholder="Ex. Shackle"
                     formControlName="name"
+                    name="name"
                     required
                   />
+                  <mat-error *ngIf="!productForm.controls['products'].valid">
+                    Required
+                  </mat-error>
                 </mat-form-field>
               </div>
               <div class="col-lg-3 col-md-6 col-sm-12">
-                <mat-form-field appearance="fill" class="w-100">
-                  <mat-label>Description</mat-label>
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Feature</mat-label>
                   <input
-                    type="text"
                     matInput
-                    placeholder="(required | text)"
+                    type="text"
+                    placeholder="Ex. Feature of Shackle"
                     formControlName="description"
+                    name="description"
+                    required
                   />
+                  <mat-error *ngIf="!productForm.controls['products'].valid">
+                    Required
+                  </mat-error>
                 </mat-form-field>
               </div>
               <div class="col-lg-3 col-md-6 col-sm-12">
-                <mat-form-field appearance="fill" class="w-100">
+                <mat-form-field appearance="outline" class="w-100">
                   <mat-label>Make</mat-label>
                   <input
-                    type="tel"
                     matInput
-                    placeholder="(required | text)"
+                    type="text"
+                    placeholder="Ex. Rodon, Netherlands"
                     formControlName="make"
+                    name="make"
+                    required
                   />
+                  <mat-error *ngIf="!productForm.controls['products'].valid">
+                    Required
+                  </mat-error>
                 </mat-form-field>
               </div>
               <div class="col-lg-3 col-md-6 col-sm-12">
-                <mat-form-field appearance="fill" class="w-100">
+                <mat-form-field appearance="outline" class="w-100">
                   <mat-label>Quantity</mat-label>
                   <input
-                    type="number"
                     matInput
-                    placeholder="(required | number)"
+                    type="number"
+                    placeholder="Ex. 10"
                     formControlName="quantity"
+                    name="quantity"
                     step="1"
+                    required
                   />
+                  <mat-error *ngIf="!productForm.controls['products'].valid">
+                    Required | Only Number allowed
+                  </mat-error>
                 </mat-form-field>
               </div>
               <div class="col-lg-3 col-md-6 col-sm-12">
-                <mat-form-field appearance="fill" class="w-100">
+                <mat-form-field appearance="outline" class="w-100">
                   <mat-label>Price</mat-label>
                   <input
-                    type="number"
                     matInput
-                    placeholder="Price"
+                    type="number"
+                    placeholder="Ex. 100.5"
                     formControlName="price"
+                    name="price"
+                    required
                   />
+                  <mat-error *ngIf="!productForm.controls['products'].valid">
+                    Required
+                  </mat-error>
                 </mat-form-field>
               </div>
               <div class="col-lg-3 col-md-6 col-sm-12"></div>
