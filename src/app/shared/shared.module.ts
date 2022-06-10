@@ -15,6 +15,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterModule } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { LoginComponent } from './components/login/login.component';
@@ -52,6 +53,7 @@ import { VerifyComponent } from './components/verify/verify.component';
     MatDatepickerModule,
     MatNativeDateModule,
     MatSnackBarModule,
+    MatProgressSpinnerModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
   ],
   exports: [
@@ -75,6 +77,7 @@ import { VerifyComponent } from './components/verify/verify.component';
     MatNativeDateModule,
     MatSnackBarModule,
     AngularFireModule,
+    MatProgressSpinnerModule,
   ],
   // no providers here
 })

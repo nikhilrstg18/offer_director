@@ -1,58 +1,16 @@
+import { OfferService } from './../../services/offer.service';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { IndCurrencyPipe } from 'src/app/shared/pipes/ind-currency.pipe';
+import { Offer } from '../../models/offer';
 declare var require: any;
 
 const htmlToPdfmake = require('html-to-pdfmake');
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
-export class Product {
-  constructor(
-    public code: string = '',
-    public name: string = '',
-    public description: string = '',
-    public make: string = '',
-    public price: number = 0,
-    public quantity: number = 0
-  ) {}
-}
-export class Customer {
-  constructor(
-    public name: string = '',
-    public orgName: string = '',
-    public email: string = '',
-    public add1: string = '',
-    public add2: string = '',
-    public city: string = '',
-    public state: string = '',
-    public pinCode: number = 0,
-    public phone: number = 0
-  ) {}
-}
-export class QuoteHeader {
-  constructor(
-    public contactPerson: string = 'Tanu Rustagi',
-    public contactEmail: string = 'tanu@atsfoodequipment.com',
-    public contactPhone: string = '9818995569',
-    public quoteNumber: number = 0,
-    public quoteDescription = '',
-    public brandName: string = 'ATS Food Equipment (India) Pvt Ltd',
-    public validity: Date = new Date()
-  ) {}
-}
-export class Offer {
-  constructor(
-    public customer: Customer = new Customer(),
-    public products: Product[] = [],
-    public quoteHeader: QuoteHeader = new QuoteHeader()
-  ) {
-    // Initially one empty product row we will show
-    this.products.push(new Product());
-  }
-}
 @Component({
   selector: 'od-create-offer',
   templateUrl: './create-offer.component.html',
@@ -68,6 +26,7 @@ export class CreateOfferComponent implements OnInit {
   isDisabled: boolean = true;
   durationInSeconds: number = 5;
   offer: Offer = new Offer();
+  title: string = 'Create Offer';
 
   @ViewChild('pdfTable')
   pdfTable!: ElementRef;
@@ -75,7 +34,8 @@ export class CreateOfferComponent implements OnInit {
   constructor(
     private _formBuilder: FormBuilder,
     private _snackBar: MatSnackBar,
-    private _indCurrency: IndCurrencyPipe
+    private _indCurrency: IndCurrencyPipe,
+    private _offerService: OfferService
   ) {}
 
   ngOnInit(): void {
@@ -155,10 +115,13 @@ export class CreateOfferComponent implements OnInit {
       }
       offer.products = offer.products.splice(1, offer.products.length - 1);
 
-      this._snackBar.open('Form Generated', 'Console', {
-        duration: this.durationInSeconds * 1000,
+      this._offerService.post(offer).then((x) => {
+        console.log(x);
+        this._snackBar.open('Form Generated', 'Console', {
+          duration: this.durationInSeconds * 1000,
+        });
+        this.downloadAsPDF(action, offer);
       });
-      this.downloadAsPDF(action, offer);
     } else {
       this._snackBar.open('Please fix validations', 'Invalid', {
         duration: this.durationInSeconds * 1000,
@@ -168,7 +131,7 @@ export class CreateOfferComponent implements OnInit {
   public downloadAsPDF(action: string, offer: Offer) {
     let today = new Date();
 
-    let dd = {
+    const dd: any = {
       pageSize: 'A4',
       pageOrientation: 'portrait',
       pageMargins: [60, 100, 60, 100],
@@ -666,13 +629,15 @@ export class CreateOfferComponent implements OnInit {
     };
     switch (action) {
       case 'view':
-        pdfMake.createPdf(dd as any).open();
+        pdfMake.createPdf(dd).open();
         break;
       case 'download':
-        pdfMake.createPdf(dd as any).download();
+        pdfMake
+          .createPdf(dd)
+          .download(`Offer_${offer.quoteHeader.quoteNumber}.pdf`);
         break;
       case 'print':
-        pdfMake.createPdf(dd as any).print();
+        pdfMake.createPdf(dd).print();
         break;
     }
   }

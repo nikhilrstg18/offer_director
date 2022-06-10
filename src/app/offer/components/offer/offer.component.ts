@@ -7,7 +7,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./offer.component.scss'],
 })
 export class OfferComponent implements OnInit {
-  title: string = 'Offer';
+  title: string = 'Offers';
 
   constructor(private _formBuilder: FormBuilder) {}
 
