@@ -1,11 +1,11 @@
 export const environment = {
   production: true,
   firebaseConfig: {
-    apiKey: 'AIzaSyADwYLNspdzhBxTewT5X3Y0b7rtbn8JRWM',
+    apiKey: 'AIzaSyADwYLNsptesttesttest',
     authDomain: 'ats-offer-director.firebaseapp.com',
     projectId: 'ats-offer-director',
     storageBucket: 'ats-offer-director.appspot.com',
-    messagingSenderId: '741433744195',
-    appId: '1:741433744195:web:66bfa71d9e182c2029edf6',
+    messagingSenderId: '7testtest4195',
+    appId: '1:7414test4195testb:66bfa71dtesttes2029edf6',
   },
 };
