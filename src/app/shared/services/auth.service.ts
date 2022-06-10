@@ -1,12 +1,18 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { GoogleAuthProvider } from '@angular/fire/auth';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private _fireAuth: AngularFireAuth, private _router: Router) {}
+  constructor(
+    private _fireAuth: AngularFireAuth,
+    private _router: Router,
+    private _snackBar: MatSnackBar
+  ) {}
 
   loginWithEmailAndPassword(email: string, password: string) {
     this._fireAuth.signInWithEmailAndPassword(email, password).then(
@@ -14,6 +20,9 @@ export class AuthService {
         localStorage.setItem('token', 'true');
         if (res.user?.emailVerified) {
           this._router.navigate(['navigation', 'home']);
+          this._snackBar.open(`Hi ${email}`, 'Login', {
+            duration: 5 * 1000,
+          });
         } else {
           this._router.navigate(['/verify']);
         }
@@ -70,6 +79,24 @@ export class AuthService {
       (err) => {
         alert(`[AuthService].[forgetPassword] ${err.message}`);
         this._router.navigate(['/forget']);
+      }
+    );
+  }
+  signInWithGoogle() {
+    this._fireAuth.signInWithPopup(new GoogleAuthProvider()).then(
+      (res) => {
+        this._router.navigate(['navigation', 'home']);
+        localStorage.setItem('token', JSON.stringify(res.user?.uid));
+        this._snackBar.open(`Hi ${res?.user?.displayName}`, 'Login', {
+          duration: 5 * 1000,
+        });
+        //displayName
+        // email
+        // phoneNumber
+        //photoUrl
+      },
+      (err) => {
+        alert(`[AuthService][signInWithGoogle] ${err.message}`);
       }
     );
   }

@@ -1,4 +1,4 @@
-<div class="h-100 d-flex justify-content-center align-items-center">
+<div class="h-100 d-flex justify-content-center align-items-center flex-column">
   <div>
     <mat-card>
       <mat-card-content>
@@ -89,6 +89,20 @@
             </div>
           </div>
         </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div>
+    <mat-card>
+      <mat-card-content>
+        <button mat-button color="default" (click)="signInWithGoogle()">
+          Signin with Google
+          <img
+            width="24"
+            height="24"
+            src="https://img.icons8.com/color/48/undefined/google-logo.png"
+          />
+        </button>
       </mat-card-content>
     </mat-card>
   </div>
