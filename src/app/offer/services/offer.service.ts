@@ -1,4 +1,4 @@
-import { MatSort } from '@angular/material/sort';
+import { MatSort, SortDirection } from '@angular/material/sort';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Offer } from '../models/offer';
@@ -12,11 +12,21 @@ export class OfferService {
   get(id: string) {
     return this._afs.doc<Offer>(id).valueChanges();
   }
-  getAll(offset: number, fetch: number, orderBy: string, order: string) {
+  getAll(
+    filter: string,
+    offset: number,
+    fetch: number,
+    orderBy: string,
+    order: string
+  ) {
+    debugger;
     return this._afs
       .collection<Offer>('offers', (ref) =>
         ref
-          .orderBy('createdDate', order == 'desc' ? 'desc' : 'asc')
+          .orderBy(
+            orderBy == '' ? 'createdDate' : orderBy,
+            order == 'desc' ? 'desc' : 'asc'
+          )
           .startAt(offset)
           .limit(fetch)
       )

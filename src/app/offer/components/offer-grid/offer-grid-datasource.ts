@@ -116,11 +116,17 @@ export class OfferGridDataSource extends DataSource<Offer> {
    * Sort the data (client-side). If you're using server-side sorting,
    * this would be replaced by requesting the appropriate data from the server.
    */
-  loadOffers(sortBy = '', sortDirection = 'asc', pageIndex = 0, pageSize = 3) {
+  loadOffers(
+    filter: string,
+    sortBy = '',
+    sortDirection = 'asc',
+    pageIndex = 0,
+    pageSize = 3
+  ) {
     this.loadingSubject.next(true);
 
     this._offerService
-      .getAll(pageIndex * pageSize, pageSize, sortBy, sortDirection)
+      .getAll(filter, pageIndex * pageSize, pageSize, sortBy, sortDirection)
       .pipe(
         catchError(() => of([])),
         finalize(() => this.loadingSubject.next(false))

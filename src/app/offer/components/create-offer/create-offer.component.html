@@ -1,6 +1,11 @@
 <h2 class="p-2 text-center">{{ title }}</h2>
 <div>
-  <mat-stepper orientation="vertical" [linear]="isLinear" #stepper>
+  <mat-stepper
+    orientation="vertical"
+    [linear]="isLinear"
+    #stepper
+    class="mat-elevation-z4 m-4"
+  >
     <mat-step [stepControl]="headerForm" class="d-flex w-100">
       <form [formGroup]="headerForm">
         <ng-template matStepLabel>

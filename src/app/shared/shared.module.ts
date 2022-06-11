@@ -16,6 +16,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { RouterModule } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { LoginComponent } from './components/login/login.component';
@@ -54,6 +55,7 @@ import { VerifyComponent } from './components/verify/verify.component';
     MatNativeDateModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
+    MatProgressBarModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
   ],
   exports: [
@@ -78,6 +80,7 @@ import { VerifyComponent } from './components/verify/verify.component';
     MatSnackBarModule,
     AngularFireModule,
     MatProgressSpinnerModule,
+    MatProgressBarModule,
   ],
   // no providers here
 })
