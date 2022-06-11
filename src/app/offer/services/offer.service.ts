@@ -19,7 +19,6 @@ export class OfferService {
     orderBy: string,
     order: string
   ) {
-    debugger;
     return this._afs
       .collection<Offer>('offers', (ref) =>
         ref

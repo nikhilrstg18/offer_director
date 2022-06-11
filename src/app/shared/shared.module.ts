@@ -5,7 +5,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -88,7 +88,11 @@ export class SharedModule {
   public static root() {
     return {
       ngModule: SharedModule,
-      providers: [AuthService, IndCurrencyPipe],
+      providers: [
+        AuthService,
+        IndCurrencyPipe,
+        { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+      ],
     };
   }
 }

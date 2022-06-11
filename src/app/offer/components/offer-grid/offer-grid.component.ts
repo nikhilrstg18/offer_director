@@ -55,7 +55,7 @@ export class OfferGridComponent implements OnInit, AfterViewInit {
         distinctUntilChanged(),
         tap(() => {
           this.paginator.pageIndex = 0;
-          this.loadOffers(this.input.nativeElement);
+          this.loadOffers();
         })
       )
       .subscribe();

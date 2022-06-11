@@ -11,6 +11,10 @@ const routes: Routes = [
         path: '',
         component: OfferComponent,
       },
+      {
+        path: 'create',
+        component: CreateOfferComponent,
+      },
     ],
   },
 ];
