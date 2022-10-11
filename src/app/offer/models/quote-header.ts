@@ -1,3 +1,5 @@
+import { AfsDate } from './asf-date';
+
 export class QuoteHeader {
   constructor(
     public contactPerson: string = 'Tanu Rustagi',
@@ -6,6 +8,6 @@ export class QuoteHeader {
     public quoteNumber: number = 0,
     public quoteDescription = '',
     public brandName: string = 'ATS Food Equipment (India) Pvt Ltd',
-    public validity: Date = new Date()
+    public validity: Date | AfsDate = new Date()
   ) {}
 }

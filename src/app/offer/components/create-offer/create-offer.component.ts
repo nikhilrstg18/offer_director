@@ -1,11 +1,13 @@
-import { OfferService } from './../../services/offer.service';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute } from '@angular/router';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { IndCurrencyPipe } from 'src/app/shared/pipes/ind-currency.pipe';
+import { AfsDate } from '../../models/asf-date';
 import { Offer } from '../../models/offer';
+import { OfferService } from './../../services/offer.service';
 declare var require: any;
 
 const htmlToPdfmake = require('html-to-pdfmake');
@@ -25,8 +27,10 @@ export class CreateOfferComponent implements OnInit {
   form!: FormGroup;
   isDisabled: boolean = true;
   durationInSeconds: number = 5;
-  offer: Offer = new Offer();
+  offer: Offer | undefined = new Offer();
   title: string = 'Create Offer';
+  id: any;
+  mode: any;
 
   @ViewChild('pdfTable')
   pdfTable!: ElementRef;
@@ -35,7 +39,8 @@ export class CreateOfferComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private _snackBar: MatSnackBar,
     private _indCurrency: IndCurrencyPipe,
-    private _offerService: OfferService
+    private _offerService: OfferService,
+    private _route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -70,6 +75,22 @@ export class CreateOfferComponent implements OnInit {
       headers: this.headerForm,
       customer: this.customerForm,
       products: this.products,
+    });
+    this._route.paramMap.subscribe((params) => {
+      this.id = params.get('id');
+      if (this.id !== null) {
+        this.title = 'Edit Offer';
+        this._offerService.get(this.id).subscribe((offer) => {
+          this.offer = offer;
+          this.headerForm.patchValue({
+            ...offer?.quoteHeader,
+            validity: new Date(
+              (offer?.quoteHeader.validity as AfsDate).seconds * 1000
+            ),
+          });
+          this.form.patchValue({ ...offer });
+        });
+      }
     });
   }
   get products() {
@@ -114,14 +135,23 @@ export class CreateOfferComponent implements OnInit {
         offer.products.push({ ...product });
       }
       offer.products = offer.products.splice(1, offer.products.length - 1);
+      offer.id = this.offer!.id;
 
-      this._offerService.post(offer).then((x) => {
-        console.log(x);
-        this._snackBar.open('Form Generated', 'Console', {
-          duration: this.durationInSeconds * 1000,
+      if (offer.id === '') {
+        this._offerService.post(offer).then((x) => {
+          this._snackBar.open('Form Generated', 'Console', {
+            duration: this.durationInSeconds * 1000,
+          });
+          this.downloadAsPDF(action, offer);
         });
-        this.downloadAsPDF(action, offer);
-      });
+      } else {
+        this._offerService.update(offer, this.offer).then((x) => {
+          this._snackBar.open('Form Saved', 'Console', {
+            duration: this.durationInSeconds * 1000,
+          });
+          this.downloadAsPDF(action, offer);
+        });
+      }
     } else {
       this._snackBar.open('Please fix validations', 'Invalid', {
         duration: this.durationInSeconds * 1000,

@@ -1,10 +1,12 @@
 <section class="p-4">
-  <div>
+  <div *ngIf="id !== null; else create">
     <div class="d-flex justify-content-between">
       <h2 class="p-2 text-center">
-        {{ title }} | #{{ headerForm.controls["quoteNumber"].value }}
+        {{ title }} #{{ offer?.quoteHeader?.quoteNumber }} :
+        {{ offer?.quoteHeader?.quoteDescription }} |
+        {{ offer?.customer?.orgName }}
       </h2>
-      <a routerLink="./.." class="py-2">
+      <a routerLink="./../.." class="py-2">
         <button mat-fab color="primary" title="back">
           <mat-icon
             ><span class="material-icons-outlined">
@@ -15,6 +17,24 @@
       </a>
     </div>
   </div>
+  <ng-template #create>
+    <div>
+      <div class="d-flex justify-content-between">
+        <h2 class="p-2 text-center">
+          {{ title }} | #{{ headerForm.controls["quoteNumber"].value }}
+        </h2>
+        <a routerLink="./.." class="py-2">
+          <button mat-fab color="primary" title="back">
+            <mat-icon
+              ><span class="material-icons-outlined">
+                keyboard_backspace
+              </span></mat-icon
+            >
+          </button>
+        </a>
+      </div>
+    </div>
+  </ng-template>
 
   <div>
     <mat-stepper
@@ -26,7 +46,7 @@
       <mat-step [stepControl]="headerForm" class="d-flex w-100">
         <form [formGroup]="headerForm">
           <ng-template matStepLabel>
-            <span> Add Quote</span>
+            <span> {{ id !== null ? "Edit" : "Add" }} Quote</span>
             <span *ngIf="headerForm.touched && !headerForm.valid"
               ><mat-icon color="warn">error</mat-icon></span
             >
@@ -37,7 +57,7 @@
                 <mat-label>Quote Number</mat-label>
                 <input
                   matInput
-                  type="number"
+                  type="text"
                   placeholder="Ex. 22222"
                   formControlName="quoteNumber"
                   name="quoteNumber"
@@ -138,7 +158,7 @@
       <mat-step [stepControl]="customerForm">
         <form [formGroup]="customerForm">
           <ng-template matStepLabel>
-            <span> Add Customer</span>
+            <span> {{ id !== null ? "Edit" : "Add" }} Customer</span>
             <span *ngIf="customerForm.touched && !customerForm.valid"
               ><mat-icon color="warn">error</mat-icon></span
             ></ng-template
@@ -297,7 +317,7 @@
       <mat-step [stepControl]="productForm" class="d-flex w-100">
         <form [formGroup]="productForm">
           <ng-template matStepLabel>
-            <span> Add Products</span>
+            <span> {{ id !== null ? "Edit" : "Add" }} Products</span>
             <span *ngIf="products.dirty && products.invalid"
               ><mat-icon color="warn">error</mat-icon></span
             >
@@ -432,7 +452,9 @@
         </form>
       </mat-step>
       <mat-step>
-        <ng-template matStepLabel>Generate Offer</ng-template>
+        <ng-template matStepLabel
+          >{{ id !== null ? "Edit & " : "" }}Generate Offer</ng-template
+        >
 
         <div>
           <div class="d-flex justify-content-around p-4">
@@ -440,7 +462,7 @@
               mat-fab
               color="primary"
               (click)="downloadOffer('view')"
-              title="View Offer"
+              title="Save & View Offer"
             >
               <mat-icon>remove_red_eye</mat-icon>
             </button>
@@ -448,7 +470,7 @@
               mat-fab
               color="primary"
               (click)="downloadOffer('download')"
-              title="Download offer"
+              title="Save & Download offer"
             >
               <mat-icon>cloud_download</mat-icon>
             </button>
@@ -463,7 +485,9 @@
           </div>
           <mat-divider class="mb-2 mt-2"></mat-divider>
           <button mat-button matStepperPrevious>Back</button>
-          <button mat-button (click)="stepper.reset()">Reset</button>
+          <button mat-button (click)="stepper.reset()" *ngIf="id == null">
+            Reset
+          </button>
         </div>
       </mat-step>
     </mat-stepper>

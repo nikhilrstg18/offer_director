@@ -1,0 +1,40 @@
+<section class="p-4 pb-0">
+  <div class="d-flex flex-row">
+    <div class="align-self-center">
+      <button
+        mat-icon-button
+        [matMenuTriggerFor]="menu"
+        aria-label="Example icon-button with a menu"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>dialpad</mat-icon>
+          <span>Redial</span>
+        </button>
+        <button mat-menu-item disabled>
+          <mat-icon>voicemail</mat-icon>
+          <span>Check voice mail</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>notifications_off</mat-icon>
+          <span>Disable alerts</span>
+        </button>
+      </mat-menu>
+      <span>Filter</span>
+    </div>
+    <div class="m-4 align-self-center">Showing 0-0 of 0 items</div>
+    <span style="flex: 1 1 auto"> </span>
+    <div class="align-self-center">
+      <mat-form-field appearance="outline" class="mb-0 p-0">
+        <mat-label>Sort</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let food of foods" [value]="food.value">
+            {{ food.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+</section>

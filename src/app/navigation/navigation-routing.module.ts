@@ -1,6 +1,6 @@
-import { NavigationComponent } from './components/navigation/navigation.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { NavigationComponent } from './components/navigation/navigation.component';
 
 const routes: Routes = [
   {
@@ -18,7 +18,7 @@ const routes: Routes = [
           import('./../admin/admin.module').then((a) => a.AdminModule),
       },
       {
-        path: 'offer',
+        path: 'offers',
         loadChildren: () =>
           import('./../offer/offer.module').then((o) => o.OfferModule),
       },

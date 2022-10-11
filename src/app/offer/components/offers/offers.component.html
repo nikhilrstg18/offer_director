@@ -1,0 +1,15 @@
+<section class="p-4">
+  <div>
+    <div class="d-flex justify-content-between">
+      <h2 class="p-2 text-center">{{ title }}</h2>
+      <a [routerLink]="['create']" class="py-2">
+        <button mat-fab color="primary" title="Create Offer">
+          <mat-icon
+            ><span class="material-icons-outlined"> add </span></mat-icon
+          >
+        </button>
+      </a>
+    </div>
+  </div>
+  <od-offer-grid></od-offer-grid>
+</section>

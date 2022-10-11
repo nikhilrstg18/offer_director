@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'od-offer',
@@ -7,9 +7,18 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./offer.component.scss'],
 })
 export class OfferComponent implements OnInit {
-  title: string = 'Offers';
+  title: string = 'Offer';
+  params: any;
+  mode: any;
 
-  constructor(private _formBuilder: FormBuilder) {}
+  constructor(private _route: ActivatedRoute) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this._route.paramMap.subscribe((params) => {
+      this.params = params.get('id');
+    });
+    this._route.queryParamMap.subscribe((queryParams) => {
+      this.mode = queryParams.get('mode');
+    });
+  }
 }

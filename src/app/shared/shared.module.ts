@@ -7,24 +7,26 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { RouterModule } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
+import { ForgetComponent } from './components/forget/forget.component';
 import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
-import { AuthService } from './services/auth.service';
-import { IndCurrencyPipe } from './pipes/ind-currency.pipe';
-import { ForgetComponent } from './components/forget/forget.component';
 import { VerifyComponent } from './components/verify/verify.component';
+import { IndCurrencyPipe } from './pipes/ind-currency.pipe';
+import { AuthService } from './services/auth.service';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,7 @@ import { VerifyComponent } from './components/verify/verify.component';
     IndCurrencyPipe,
     ForgetComponent,
     VerifyComponent,
+    ConfirmDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -56,6 +59,7 @@ import { VerifyComponent } from './components/verify/verify.component';
     MatSnackBarModule,
     MatProgressSpinnerModule,
     MatProgressBarModule,
+    MatDialogModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
   ],
   exports: [
@@ -81,6 +85,7 @@ import { VerifyComponent } from './components/verify/verify.component';
     AngularFireModule,
     MatProgressSpinnerModule,
     MatProgressBarModule,
+    MatDialogModule,
   ],
   // no providers here
 })
